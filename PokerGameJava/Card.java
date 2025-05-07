@@ -39,14 +39,14 @@ public class Card {
          }
     }
 
-   public String toString(){
+   public String toString(){ // prints out cards better
           
           return rank + suit;
 
    }
 
-   public char getSuit(){
-
+   // allows for direct getting of the variables
+   public char getSuit(){ 
     return suit;
    }
 
