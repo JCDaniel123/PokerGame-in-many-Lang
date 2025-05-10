@@ -42,4 +42,12 @@ public class Hand {
 
    }
 
+   public int evaluateHand(){
+    
+    // place holder for the hand ranking logic
+    
+    return 0;
+
+   }
+
 }
