@@ -34,6 +34,22 @@ public class PokerHandRank {
        
     }
 
+    public String getRankName(){
+
+        if (isRoyalFlush())    return "Royal Flush";
+        if (isStraightFlush()) return "Straight Flush";
+        if (isFourOfAKind())   return   "Four of a Kind";
+        if (isFullHouse()) return "Full House";
+        if (isFlush()) return "Flush";
+        if (isStraight()) return "Straight";
+        if (isThreeOfAKind()) return "Three of a Kind";
+        if (isTwoPair()) return "Two Pair";
+        if (isPair()) return "One Pair";
+        return "High Card";
+
+      
+    }  
+
     private boolean isRoyalFlush(){ // the logic for a royal flush 
         return isStraightFlush() && sortedCards.get(0).getValue() == 10;
     }
