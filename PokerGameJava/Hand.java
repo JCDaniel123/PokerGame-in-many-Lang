@@ -35,7 +35,7 @@ public class Hand {
    public String toString(){
      StringBuilder sb = new StringBuilder(); // a way to save memory by using string builder and is better for repeated concatenation
      for(Card card:cards){ // a for each loop for each card in the hand(cards list)
-         sb.append(card.getRank()).append(card.getSuitRank()).append(" "); // attaches the card value and rank together and prints a space everyrime a card is printed from the hand
+         sb.append(card.getRank()).append(card.getSuit()).append(" "); // attaches the card value and rank together and prints a space everyrime a card is printed from the hand
      }
 
      return sb.toString().trim(); // converts the string builder into a string and trims any leading spaces off.
