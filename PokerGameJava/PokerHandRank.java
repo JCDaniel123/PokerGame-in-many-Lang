@@ -17,20 +17,20 @@ public class PokerHandRank {
     }
 
     public int getRankValue(){
-        return this.rankValue; // a getter methpd for public access of the rankvalue variable
+        return this.rankValue; // a getter method for public access of the rankvalue variable
     }
 
-    private int evaluateHand(Hand hand){ // method for deciding the rank of the hand
-        if (isRoyalFlush()) return 10;
-        if (isStraightFlush()) return 9;
-        if (isFourOfAKind()) return 8;
-        if (isFullHouse()) return 7;
-        if (isFlush()) return 6;
-        if (isStraight()) return 5;
-        if (isThreeOfAKind()) return 4;
-        if (isTwoPair()) return 3;
-        if (isPair()) return 2;
-        return 1;
+    public int evaluateHand(Hand hand){ // method for deciding the rank of the hand
+        if (isRoyalFlush()) return 1;
+        if (isStraightFlush()) return 2;
+        if (isFourOfAKind()) return 3;
+        if (isFullHouse()) return 4;
+        if (isFlush()) return 5;
+        if (isStraight()) return 6;
+        if (isThreeOfAKind()) return 7;
+        if (isTwoPair()) return 8;
+        if (isPair()) return 9;
+        return 10;
        
     }
 
