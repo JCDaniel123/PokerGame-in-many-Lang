@@ -6,7 +6,7 @@ public class Main {
 
     public static void main(String[]args){
     
-       Scanner scanner = new Scanner(System.in);
+       Scanner scanner = new Scanner(System.in); // why need this?
        Hand[] hands = new Hand[6];
 
        formatting();
@@ -19,7 +19,7 @@ public class Main {
        System.out.println("*** Here are the six hands...");
     for(int i = 0;i < 6; i++){
          hands[i] = new Hand();
-       for(int j = 0; j < 5; j++){////////////////
+       for(int j = 0; j < 5; j++){ // did we need the nested loop? dont use j anywhere in the loop
            hands[i].addCard(deck.dealCard());
        }
        System.out.println(hands[i]);
@@ -28,9 +28,10 @@ public class Main {
     System.out.println("*** Here is what remains in the deck...");
     System.out.println(deck);
     System.out.println(" ");
+
     System.out.println("--- WINNING HAND ORDER ---");
-    Arrays.sort(hands, Comparator.comparingInt(hand -> new PokerHandRank(hand).evaluateHand(hand)));
-    for(int k =0; k< hands.length; k++){
+    Arrays.sort(hands, Comparator.comparingInt(hand -> new PokerHandRank(hand).evaluateHand(hand))); // detailed explanation of how this works
+    for(int k = 0; k< hands.length; k++){
         PokerHandRank rank = new PokerHandRank(hands[k]);
         System.out.println(hands[k] + " - " + rank.getRankName());
     }
