@@ -1,17 +1,75 @@
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Scanner;
+import java.util.HashSet;
+import java.util.Set;
+import java.io.File;
+import java.io.FileNotFoundException;
+
 
 public class Main {
 
     public static void main(String[]args){
+       if(args.length > 0){
+            
+           String fileName = args[0];
+            
+           try{
+              File file = new File(fileName);
+              Scanner fileScanner = new Scanner(file);
+              formattingForFile();
+               System.out.println("*** File Name: "+ fileName);
+              Hand[] hands = new Hand[5];
+              Set<String> seenCards = new HashSet<>();
+              int handIndex = 0;
+              
+               
+            
+
+
+
+              while (fileScanner.hasNextLine() && handIndex < 5) {
+                    String line = fileScanner.nextLine().trim();
+                    System.out.println(line);
+                    hands[handIndex] = new Hand();
+                    String[] cardStrings = line.split(" ");
+
+                    for (String cardStr : cardStrings){
+                        if(seenCards.contains(cardStr)){
+                             System.out.println( "Error: Duplicate card detected - " + cardStr);
+                             fileScanner.close();
+                             return;
+                        }
+
+                        seenCards.add(cardStr);
+                        String rank = cardStr.substring(0, cardStr.length() - 1);
+                        char suit = cardStr.charAt(cardStr.length()-1);
+                        hands[handIndex].addCard(new Card(rank,suit));
+                    }
+
+                    handIndex++;
+              }
+
+              fileScanner.close();
+        System.out.println(" ");
+      System.out.println("--- WINNING HAND ORDER ---");
+    Arrays.sort(hands, Comparator.comparingInt(hand -> new PokerHandRank(hand).evaluateHand(hand))); // detailed explanation of how this works
+        for(int k = 0; k< hands.length; k++){
+        PokerHandRank rank = new PokerHandRank(hands[k]);
+        System.out.println(hands[k] + " - " + rank.getRankName());
+      }
+    } catch (FileNotFoundException e){
+             System.out.println("Error: File not found -" + fileName);
+    }
+
+  }else {
     
-       Scanner scanner = new Scanner(System.in); // why need this?
-       Hand[] hands = new Hand[6];
+     
 
        formatting();
        Deck deck = new Deck();
        deck.shuffle();
+       Hand[] hands = new Hand[6];
        System.out.println("*** Shuffled 52 Card Deck:");
        System.out.println(deck);
        System.out.println(" ");
@@ -35,6 +93,7 @@ public class Main {
         PokerHandRank rank = new PokerHandRank(hands[k]);
         System.out.println(hands[k] + " - " + rank.getRankName());
     }
+   }
  }
 
     public static void formatting(){
@@ -42,6 +101,17 @@ public class Main {
         System.out.println("*** P O K E R  H A N D  A N A L Y Z E R *** ");
         System.out.println(" ");
         System.out.println(" *** USING RANDOMIZED DECK OF CARDS *** ");
+        System.out.println(" ");
+        System.out.println(" ");
+
+
+    }
+
+     public static void formattingForFile(){
+
+        System.out.println("*** P O K E R  H A N D  A N A L Y Z E R *** ");
+        System.out.println(" ");
+        System.out.println(" *** USING TEST DECK *** ");
         System.out.println(" ");
         System.out.println(" ");
 
