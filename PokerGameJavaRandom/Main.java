@@ -24,8 +24,6 @@ public class Main {
               int handIndex = 0;
               
                
-            
-
 
 
               while (fileScanner.hasNextLine() && handIndex < 5) {
@@ -51,6 +49,12 @@ public class Main {
               }
 
               fileScanner.close();
+              System.out.println("  ");
+              System.out.println("*** Here are the  six hands...");
+              for(int k = 0; k< hands.length; k++){
+        PokerHandRank rank = new PokerHandRank(hands[k]);
+        System.out.println(hands[k]);
+      }
         System.out.println(" ");
       System.out.println("--- WINNING HAND ORDER ---");
     Arrays.sort(hands, Comparator.comparingInt(hand -> new PokerHandRank(hand).evaluateHand(hand))); // detailed explanation of how this works
