@@ -10,28 +10,34 @@ import java.io.FileNotFoundException;
 public class Main {
 
     public static void main(String[]args){
-       if(args.length > 0){
-            
+       
+       // Check if filename was passed
+       if(args.length > 0){      
            String fileName = args[0];
             
            try{
+              // open the file and prepare to scan
               File file = new File(fileName);
               Scanner fileScanner = new Scanner(file);
               formattingForFile();
                System.out.println("*** File Name: "+ fileName);
-              Hand[] hands = new Hand[5];
-              Set<String> seenCards = new HashSet<>();
+
+               // Set up data structures
+              Hand[] hands = new Hand[5]; // array to store 5 hands;
+              Set<String> seenCards = new HashSet<>(); // to track duplicate cards
               int handIndex = 0;
               
                
 
-
+              // loop through lines (hands)
               while (fileScanner.hasNextLine() && handIndex < 5) {
                     String line = fileScanner.nextLine().trim();
-                    System.out.println(line);
+                    System.out.println(line); // print raw hand line
                     hands[handIndex] = new Hand();
-                    String[] cardStrings = line.split(" ");
+                    String[] cardStrings = line.split(" "); // plits the line (like "7C AD 9H 10S KD") into individual card strings: ["7C", "AD", "9H", "10S", "KD"]
+                    
 
+                    // loop through each card in the line
                     for (String cardStr : cardStrings){
                         if(seenCards.contains(cardStr)){
                              System.out.println( "Error: Duplicate card detected - " + cardStr);
