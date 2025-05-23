@@ -23,14 +23,14 @@ public class Main {
                System.out.println("*** File Name: "+ fileName);
 
                // Set up data structures
-              Hand[] hands = new Hand[5]; // array to store 5 hands;
+              Hand[] hands = new Hand[6]; // array to store 6 hands;
               Set<String> seenCards = new HashSet<>(); // to track duplicate cards
-              int handIndex = 0;
+              int handIndex = 0; // counts the number of hands
               
                
 
               // loop through lines (hands)
-              while (fileScanner.hasNextLine() && handIndex < 5) {
+              while (fileScanner.hasNextLine() && handIndex < 6) {
                     String line = fileScanner.nextLine().trim();
                     System.out.println(line); // print raw hand line
                     hands[handIndex] = new Hand();
