@@ -47,3 +47,11 @@ class Deck:
 
             for i, card in enumerate(self.cards, start=1):
                  line.append(str(card)) # Convert card to string and add to current line
+                 if i % 13 ==0:
+                     lines.append(' '.join(line)) #add completed line to lines list
+                     line = [] # Start a new line
+
+                 if line:
+                     line.append(' '.join(line)) # Add any left over cards
+
+                 return '\n'.join(lines) # join all lines with newline chars
