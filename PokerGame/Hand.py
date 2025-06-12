@@ -1,5 +1,5 @@
 from typing import List
-from card import Card # Assuming you have a seperate Card clas
+from Card import Card # Assuming you have a seperate Card clas
 
 class Hand:
     def __init__(self):
