@@ -4,7 +4,7 @@ class PokerHandRank:
 
     def __init__(self, hand):
         # Sort the cards by value, then by suit
-        self.cards = sorted(hand.cards, key=lambda c: (c.get_value(), c.get_suit()))
+        self.cards = sorted(hand.cards, key=lambda c: (c.get_value(), c.get_suit_rank()))
         # Determine and store the rank of the hand
         self.rank_value = self.evaluate_hand()
 
@@ -47,6 +47,9 @@ class PokerHandRank:
     def is_straight(self):
         # Check if all cards form a sequence in value
         values = [card.get_value() for card in self.cards]
+
+        if values == [2,3,4,5,14]:
+            return true
         return all(values[i+1] == values[i] + 1 for i in range(len(values) -1))
     
 
@@ -73,8 +76,8 @@ class PokerHandRank:
 
     def is_full_house(self):
         # Check for 3 of a kind and a pair
-        counts = self.get_value_counts
-        return 3 in counts and 2 in counts
+        counts = self.get_value_counts()
+        return 3 in counts.values() and 2 in counts.values()
     
 
     def is_three_of_a_kind(self):
@@ -96,5 +99,5 @@ class PokerHandRank:
     
     def __str__(self):
          # Return a string representation of the hand's rank and cards
-        card_strs = ' '.join(str(card) for card in self.cards)
-        return f"Rank: {self.rank_value}, Cards: {card_strs}"
+      #  card_strs = ' '.join(str(card) for card in self.cards)
+        return "Jonathan"

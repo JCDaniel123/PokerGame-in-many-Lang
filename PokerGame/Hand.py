@@ -26,6 +26,6 @@ class Hand:
         self.cards.sort(key=lambda card: (card.get_value(), card.get_suit_rank()))
 
     
-    def __str__(self) -> str:
+    def __str__(self):
         # Builds a string representation of the hand
         return ' '.join(str(card) for card in self.cards)
