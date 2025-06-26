@@ -39,13 +39,13 @@ public:
     }
 
     // Deal and remove the top card (from the end for efficiency)
-    Card* dealCard() {
+    Card dealCard() {
         if (!cards.empty()) {
-            Card* card = new Card(cards.back());
+            Card card = cards.back();
             cards.pop_back();
             return card;
-        }
-        return nullptr;
+        }   
+          throw std::out_of_range("No cards left in the deck");
     }
 
     // Return the number of cards in the deck
@@ -81,11 +81,12 @@ public:
         return result;
     }
 
-    // Friend function to overload operator<< for printing
     friend std::ostream& operator<<(std::ostream& os, const Deck& deck) {
-        os << deck.toString();
-        return os;
-    }
+    os << deck.toString();  // assumes you have a `toString()` method in Deck
+    return os;
+}
+
+
 };
 
 #endif // DECK_HPP
