@@ -12,11 +12,14 @@ private:
     std::vector<Card> sortedCards;
 
 public:
-    // Constructor evaluates and stores the hand rank
     PokerHandRank(const Hand& hand) {
         sortedCards = hand.getCards();
-        Hand tempHand = hand;
-        tempHand.sort(); // Sort copy
+        std::sort(sortedCards.begin(), sortedCards.end(), [](const Card& a, const Card& b) {
+            if (a.getValue() == b.getValue()) {
+                return a.getSuitRank() < b.getSuitRank();
+            }
+            return a.getValue() < b.getValue();
+        });
         rankValue = evaluateHand();
     }
 
@@ -61,7 +64,7 @@ private:
     }
 
     bool isRoyalFlush() const {
-        return isStraightFlush() && sortedCards[0].getValue() == 10;
+        return isStraightFlush() && sortedCards.back().getValue() == 14; // Ace is highest
     }
 
     bool isStraightFlush() const {
@@ -78,8 +81,14 @@ private:
 
     bool isStraight() const {
         for (size_t i = 0; i < sortedCards.size() - 1; ++i) {
-            if (sortedCards[i + 1].getValue() != sortedCards[i].getValue() + 1)
+            if (sortedCards[i + 1].getValue() != sortedCards[i].getValue() + 1) {
+                if (sortedCards[0].getValue() == 2 && sortedCards[1].getValue() == 3 &&
+                    sortedCards[2].getValue() == 4 && sortedCards[3].getValue() == 5 &&
+                    sortedCards[4].getValue() == 14) {
+                    return true;
+                }
                 return false;
+            }
         }
         return true;
     }
@@ -112,9 +121,8 @@ private:
 
     bool isThreeOfAKind() const {
         auto counts = getValueCounts();
-        bool isFull = isFullHouse();
         for (const auto& pair : counts) {
-            if (pair.second == 3 && !isFull) return true;
+            if (pair.second == 3) return true;
         }
         return false;
     }
@@ -130,9 +138,8 @@ private:
 
     bool isPair() const {
         auto counts = getValueCounts();
-        bool twoPair = isTwoPair();
         for (const auto& pair : counts) {
-            if (pair.second == 2 && !twoPair) return true;
+            if (pair.second == 2) return true;
         }
         return false;
     }

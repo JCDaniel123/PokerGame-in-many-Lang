@@ -10,12 +10,10 @@ private:
     char suit;
 
 public:
-    // Constructor
     Card(std::string r, char s) : rank(r), suit(s) {}
 
-    // Get the numerical value of the card's rank
     int getValue() const {
-        if (rank == "A") return 1;
+        if (rank == "A") return 14; // Ace is high
         if (rank == "2") return 2;
         if (rank == "3") return 3;
         if (rank == "4") return 4;
@@ -31,7 +29,6 @@ public:
         return 0;
     }
 
-    // Get the numerical value of the card's suit
     int getSuitRank() const {
         switch (suit) {
             case 'C': return 1; // Clubs
@@ -42,12 +39,10 @@ public:
         }
     }
 
-    // Return string representation of the card (e.g., "AS" for Ace of Spades)
     std::string toString() const {
         return rank + suit;
     }
 
-    // Getters
     char getSuit() const {
         return suit;
     }
@@ -56,7 +51,6 @@ public:
         return rank;
     }
 
-    // Friend function to overload operator<< for printing
     friend std::ostream& operator<<(std::ostream& os, const Card& card) {
         os << card.toString();
         return os;
