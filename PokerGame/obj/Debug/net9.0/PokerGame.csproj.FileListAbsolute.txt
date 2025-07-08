@@ -1,0 +1,15 @@
+C:\Users\Owner\OneDrive\Desktop\CSC 330\PokerGame-in-many-Lang\PokerGame\bin\Debug\net9.0\PokerGame.exe
+C:\Users\Owner\OneDrive\Desktop\CSC 330\PokerGame-in-many-Lang\PokerGame\bin\Debug\net9.0\PokerGame.deps.json
+C:\Users\Owner\OneDrive\Desktop\CSC 330\PokerGame-in-many-Lang\PokerGame\bin\Debug\net9.0\PokerGame.runtimeconfig.json
+C:\Users\Owner\OneDrive\Desktop\CSC 330\PokerGame-in-many-Lang\PokerGame\bin\Debug\net9.0\PokerGame.dll
+C:\Users\Owner\OneDrive\Desktop\CSC 330\PokerGame-in-many-Lang\PokerGame\bin\Debug\net9.0\PokerGame.pdb
+C:\Users\Owner\OneDrive\Desktop\CSC 330\PokerGame-in-many-Lang\PokerGame\obj\Debug\net9.0\PokerGame.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Owner\OneDrive\Desktop\CSC 330\PokerGame-in-many-Lang\PokerGame\obj\Debug\net9.0\PokerGame.AssemblyInfoInputs.cache
+C:\Users\Owner\OneDrive\Desktop\CSC 330\PokerGame-in-many-Lang\PokerGame\obj\Debug\net9.0\PokerGame.AssemblyInfo.cs
+C:\Users\Owner\OneDrive\Desktop\CSC 330\PokerGame-in-many-Lang\PokerGame\obj\Debug\net9.0\PokerGame.csproj.CoreCompileInputs.cache
+C:\Users\Owner\OneDrive\Desktop\CSC 330\PokerGame-in-many-Lang\PokerGame\obj\Debug\net9.0\PokerGame.sourcelink.json
+C:\Users\Owner\OneDrive\Desktop\CSC 330\PokerGame-in-many-Lang\PokerGame\obj\Debug\net9.0\PokerGame.dll
+C:\Users\Owner\OneDrive\Desktop\CSC 330\PokerGame-in-many-Lang\PokerGame\obj\Debug\net9.0\refint\PokerGame.dll
+C:\Users\Owner\OneDrive\Desktop\CSC 330\PokerGame-in-many-Lang\PokerGame\obj\Debug\net9.0\PokerGame.pdb
+C:\Users\Owner\OneDrive\Desktop\CSC 330\PokerGame-in-many-Lang\PokerGame\obj\Debug\net9.0\PokerGame.genruntimeconfig.cache
+C:\Users\Owner\OneDrive\Desktop\CSC 330\PokerGame-in-many-Lang\PokerGame\obj\Debug\net9.0\ref\PokerGame.dll
