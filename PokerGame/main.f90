@@ -2,14 +2,14 @@ program poker_hand_analyzer
     use card_module
     use deck_module
     use hand_module
-    use poker_hand_rank_module
+    use pokerhandrank_module  ! Changed from poker_hand_rank_module
     implicit none
     
     integer, parameter :: MAX_HANDS = 6
     type(Hand) :: hands(MAX_HANDS)
     type(Deck) :: deck
     type(Card) :: dealt_card
-    type(Poker_Hand_Rank) :: rank
+    type(PokerHandRank) :: rank  ! Changed from Poker_Hand_Rank
     character(len=100) :: filename, line
     integer :: i, j, hand_index, ios
     character(len=3) :: card_str
@@ -45,7 +45,7 @@ program poker_hand_analyzer
         write(*, '(A)') "*** Here are the six hands..."
         do i = 1, MAX_HANDS
             if (hands(i)%current_size > 0) then
-                rank = Poker_Hand_Rank(hands(i))
+                rank = PokerHandRank(hands(i))  ! Changed from Poker_Hand_Rank
                 write(*, '(A)') trim(hands(i)%to_string())
             end if
         end do
@@ -54,13 +54,13 @@ program poker_hand_analyzer
         call sort_hands(hands)
         do i = 1, MAX_HANDS
             if (hands(i)%current_size > 0) then
-                rank = Poker_Hand_Rank(hands(i))
+                rank = PokerHandRank(hands(i))  ! Changed from Poker_Hand_Rank
                 write(*, '(A, A)') trim(hands(i)%to_string()), " - ", trim(rank%get_rank_name())
             end if
         end do
     else
         call formatting()
-        deck = Deck()
+        deck = Deck()  ! Check if constructor needs arguments
         call deck%shuffle()
         write(*, '(A)') "*** Shuffled 52 Card Deck:"
         write(*, '(A)') trim(deck%to_string())
@@ -68,7 +68,7 @@ program poker_hand_analyzer
         
         write(*, '(A)') "*** Here are the six hands..."
         do i = 1, MAX_HANDS
-            hands(i) = Hand()
+            hands(i) = Hand()  ! Check if constructor needs arguments
             do j = 1, 5
                 dealt_card = deck%deal_card()
                 call hands(i)%add_card(dealt_card)
@@ -83,7 +83,7 @@ program poker_hand_analyzer
         write(*, '(A)') "--- WINNING HAND ORDER ---"
         call sort_hands(hands)
         do i = 1, MAX_HANDS
-            rank = Poker_Hand_Rank(hands(i))
+            rank = PokerHandRank(hands(i))  ! Changed from Poker_Hand_Rank
             write(*, '(A, A)') trim(hands(i)%to_string()), " - ", trim(rank%get_rank_name())
         end do
     end if
@@ -131,7 +131,7 @@ contains
         do i = 1, MAX_HANDS - 1
             do j = i + 1, MAX_HANDS
                 if (hands(i)%current_size > 0 .and. hands(j)%current_size > 0) then
-                    rank = Poker_Hand_Rank(hands(i))
+                    rank = PokerHandRank(hands(i))
                     if (rank%evaluate_hand(hands(i)) > rank%evaluate_hand(hands(j))) then
                         temp = hands(i)
                         hands(i) = hands(j)

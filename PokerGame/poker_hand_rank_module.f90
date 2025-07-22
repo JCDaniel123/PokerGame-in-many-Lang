@@ -1,9 +1,9 @@
-module poker_hand_rank_module
+module pokerhandrank_module
     use hand_module
     implicit none
     
     ! Define the poker hand rank type
-    type :: Poker_Hand_Rank
+    type :: PokerHandRank  ! Changed from Poker_Hand_Rank
         integer :: rank_value
         type(Card) :: sorted_cards(5)
     contains
@@ -21,79 +21,78 @@ module poker_hand_rank_module
         procedure, private :: is_three_of_a_kind => pokerhand_is_three_of_a_kind
         procedure, private :: is_two_pair => pokerhand_is_two_pair
         procedure, private :: is_pair => pokerhand_is_pair
-    end type Poker_Hand_Rank
+    end type PokerHandRank
     
-    interface Poker_Hand_Rank
+    interface PokerHandRank
         procedure pokerhand_constructor
-    end interface Poker_Hand_Rank
+    end interface PokerHandRank
 
 contains
 
- function pokerhand_constructor(new_hand) result(new_rank)
-    type(Hand), intent(in) :: new_hand  ! Keep intent(in) to preserve immutability
-    type(Poker_Hand_Rank) :: new_rank
-    integer :: i, j, min_idx
-    type(Card) :: temp
-    
-    ! Assign the cards from hand to the new rank object
-    new_rank%sorted_cards = new_hand%get_cards()
-    ! Sort new_rank%sorted_cards directly (manual sort for simplicity)
-    do i = 1, 4  ! Sort only 4 iterations since it's a 5-element array
-        min_idx = i
-        do j = i + 1, 5
-            if (new_rank%sorted_cards(j)%get_value() < new_rank%sorted_cards(min_idx)%get_value() .or. &
-                (new_rank%sorted_cards(j)%get_value() == new_rank%sorted_cards(min_idx)%get_value() .and. &
-                 new_rank%sorted_cards(j)%get_suit_rank() < new_rank%sorted_cards(min_idx)%get_suit_rank())) then
-                min_idx = j
+    function pokerhand_constructor(new_hand) result(new_rank)
+        type(Hand), intent(in) :: new_hand  ! Keep intent(in) to preserve immutability
+        type(PokerHandRank) :: new_rank     ! Changed from Poker_Hand_Rank
+        integer :: i, j, min_idx
+        type(Card) :: temp
+        
+        ! Assign the cards from hand to the new rank object
+        new_rank%sorted_cards = new_hand%get_cards()
+        ! Sort new_rank%sorted_cards directly (manual sort for simplicity)
+        do i = 1, 4  ! Sort only 4 iterations since it's a 5-element array
+            min_idx = i
+            do j = i + 1, 5
+                if (new_rank%sorted_cards(j)%get_value() < new_rank%sorted_cards(min_idx)%get_value() .or. &
+                    (new_rank%sorted_cards(j)%get_value() == new_rank%sorted_cards(min_idx)%get_value() .and. &
+                     new_rank%sorted_cards(j)%get_suit_rank() < new_rank%sorted_cards(min_idx)%get_suit_rank())) then
+                    min_idx = j
+                end if
+            end do
+            if (min_idx /= i) then
+                temp = new_rank%sorted_cards(i)
+                new_rank%sorted_cards(i) = new_rank%sorted_cards(min_idx)
+                new_rank%sorted_cards(min_idx) = temp
             end if
         end do
-        if (min_idx /= i) then
-            temp = new_rank%sorted_cards(i)
-            new_rank%sorted_cards(i) = new_rank%sorted_cards(min_idx)
-            new_rank%sorted_cards(min_idx) = temp
+        ! Evaluate the hand rank
+        new_rank%rank_value = new_rank%evaluate_hand(new_hand)
+    end function pokerhand_constructor
+
+    ! Get rank value
+    integer function pokerhand_get_rank_value(this)
+        class(PokerHandRank), intent(in) :: this  ! Changed from Poker_Hand_Rank
+        pokerhand_get_rank_value = this%rank_value
+    end function pokerhand_get_rank_value
+
+    ! Evaluate hand rank
+    integer function pokerhand_evaluate_hand(this, new_hand)
+        class(PokerHandRank), intent(inout) :: this  ! Changed from Poker_Hand_Rank
+        type(Hand), intent(in) :: new_hand
+        if (this%is_royal_flush()) then
+            pokerhand_evaluate_hand = 1
+        else if (this%is_straight_flush()) then
+            pokerhand_evaluate_hand = 2
+        else if (this%is_four_of_a_kind()) then
+            pokerhand_evaluate_hand = 3
+        else if (this%is_full_house()) then
+            pokerhand_evaluate_hand = 4
+        else if (this%is_flush()) then
+            pokerhand_evaluate_hand = 5
+        else if (this%is_straight()) then
+            pokerhand_evaluate_hand = 6
+        else if (this%is_three_of_a_kind()) then
+            pokerhand_evaluate_hand = 7
+        else if (this%is_two_pair()) then
+            pokerhand_evaluate_hand = 8
+        else if (this%is_pair()) then
+            pokerhand_evaluate_hand = 9
+        else
+            pokerhand_evaluate_hand = 10
         end if
-    end do
-    ! Evaluate the hand rank
-    new_rank%rank_value = new_rank%evaluate_hand(new_hand)
-end function pokerhand_constructor
+    end function pokerhand_evaluate_hand
 
-! Get rank value
-integer function pokerhand_get_rank_value(this)
-    class(Poker_Hand_Rank), intent(in) :: this
-    pokerhand_get_rank_value = this%rank_value
-end function pokerhand_get_rank_value
-
-! Evaluate hand rank
-integer function pokerhand_evaluate_hand(this, new_hand)
-    class(Poker_Hand_Rank), intent(inout) :: this
-    type(Hand), intent(in) :: new_hand
-    ! Implementation remains the same as before, just ensuring correct intent
-    if (this%is_royal_flush()) then
-        pokerhand_evaluate_hand = 1
-    else if (this%is_straight_flush()) then
-        pokerhand_evaluate_hand = 2
-    else if (this%is_four_of_a_kind()) then
-        pokerhand_evaluate_hand = 3
-    else if (this%is_full_house()) then
-        pokerhand_evaluate_hand = 4
-    else if (this%is_flush()) then
-        pokerhand_evaluate_hand = 5
-    else if (this%is_straight()) then
-        pokerhand_evaluate_hand = 6
-    else if (this%is_three_of_a_kind()) then
-        pokerhand_evaluate_hand = 7
-    else if (this%is_two_pair()) then
-        pokerhand_evaluate_hand = 8
-    else if (this%is_pair()) then
-        pokerhand_evaluate_hand = 9
-    else
-        pokerhand_evaluate_hand = 10
-    end if
-end function pokerhand_evaluate_hand
-
-     ! Get rank name
-function pokerhand_get_rank_name(this) result(rank_name)
-        class(Poker_Hand_Rank), intent(in) :: this
+    ! Get rank name
+    function pokerhand_get_rank_name(this) result(rank_name)
+        class(PokerHandRank), intent(in) :: this  ! Changed from Poker_Hand_Rank
         character(len=20) :: rank_name
         
         select case (this%rank_value)
@@ -124,19 +123,19 @@ function pokerhand_get_rank_name(this) result(rank_name)
 
     ! Check for royal flush
     logical function pokerhand_is_royal_flush(this)
-        class(Poker_Hand_Rank), intent(in) :: this
+        class(PokerHandRank), intent(in) :: this  ! Changed from Poker_Hand_Rank
         pokerhand_is_royal_flush = this%is_straight_flush() .and. this%sorted_cards(1)%get_value() == 10
     end function pokerhand_is_royal_flush
 
     ! Check for straight flush
     logical function pokerhand_is_straight_flush(this)
-        class(Poker_Hand_Rank), intent(in) :: this
+        class(PokerHandRank), intent(in) :: this  ! Changed from Poker_Hand_Rank
         pokerhand_is_straight_flush = this%is_flush() .and. this%is_straight()
     end function pokerhand_is_straight_flush
 
     ! Check for flush
     logical function pokerhand_is_flush(this)
-        class(Poker_Hand_Rank), intent(in) :: this
+        class(PokerHandRank), intent(in) :: this  ! Changed from Poker_Hand_Rank
         integer :: i
         character :: suit
         
@@ -152,7 +151,7 @@ function pokerhand_get_rank_name(this) result(rank_name)
 
     ! Check for straight
     logical function pokerhand_is_straight(this)
-        class(Poker_Hand_Rank), intent(in) :: this
+        class(PokerHandRank), intent(in) :: this  ! Changed from Poker_Hand_Rank
         integer :: i
         
         pokerhand_is_straight = .true.
@@ -166,7 +165,7 @@ function pokerhand_get_rank_name(this) result(rank_name)
 
     ! Get value counts
     function pokerhand_get_value_counts(this) result(counts)
-        class(Poker_Hand_Rank), intent(in) :: this
+        class(PokerHandRank), intent(in) :: this  ! Changed from Poker_Hand_Rank
         integer :: counts(13) ! Assuming values 1-13 (A=1, K=13)
         integer :: i
 
@@ -179,7 +178,7 @@ function pokerhand_get_rank_name(this) result(rank_name)
 
     ! Check for four of a kind
     logical function pokerhand_is_four_of_a_kind(this)
-        class(Poker_Hand_Rank), intent(in) :: this
+        class(PokerHandRank), intent(in) :: this  ! Changed from Poker_Hand_Rank
         integer :: counts(13)
         
         counts = this%get_value_counts()
@@ -188,7 +187,7 @@ function pokerhand_get_rank_name(this) result(rank_name)
 
     ! Check for full house
     logical function pokerhand_is_full_house(this)
-        class(Poker_Hand_Rank), intent(in) :: this
+        class(PokerHandRank), intent(in) :: this  ! Changed from Poker_Hand_Rank
         integer :: counts(13)
         
         counts = this%get_value_counts()
@@ -197,7 +196,7 @@ function pokerhand_get_rank_name(this) result(rank_name)
 
     ! Check for three of a kind
     logical function pokerhand_is_three_of_a_kind(this)
-        class(Poker_Hand_Rank), intent(in) :: this
+        class(PokerHandRank), intent(in) :: this  ! Changed from Poker_Hand_Rank
         integer :: counts(13)
         
         counts = this%get_value_counts()
@@ -206,7 +205,7 @@ function pokerhand_get_rank_name(this) result(rank_name)
 
     ! Check for two pair
     logical function pokerhand_is_two_pair(this)
-        class(Poker_Hand_Rank), intent(in) :: this
+        class(PokerHandRank), intent(in) :: this  ! Changed from Poker_Hand_Rank
         integer :: counts(13)
         integer :: pair_count
         
@@ -217,7 +216,7 @@ function pokerhand_get_rank_name(this) result(rank_name)
 
     ! Check for pair
     logical function pokerhand_is_pair(this)
-        class(Poker_Hand_Rank), intent(in) :: this
+        class(PokerHandRank), intent(in) :: this  ! Changed from Poker_Hand_Rank
         integer :: counts(13)
         
         counts = this%get_value_counts()
@@ -226,7 +225,7 @@ function pokerhand_get_rank_name(this) result(rank_name)
 
     ! Convert to string
     function pokerhand_to_string(this) result(str)
-        class(Poker_Hand_Rank), intent(in) :: this
+        class(PokerHandRank), intent(in) :: this  ! Changed from Poker_Hand_Rank
         character(len=100) :: str
         character(len=3) :: card_str
         integer :: i
@@ -239,4 +238,4 @@ function pokerhand_get_rank_name(this) result(rank_name)
         str = trim(str)
     end function pokerhand_to_string
 
-end module poker_hand_rank_module
+end module pokerhandrank_module
