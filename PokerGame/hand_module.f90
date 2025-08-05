@@ -83,6 +83,7 @@ contains
             end if
         end do
     end subroutine hand_sort
+     
 
     ! Convert hand to string
     function hand_to_string(this) result(str)
@@ -98,5 +99,6 @@ contains
         end do
         str = trim(str)
     end function hand_to_string
+
 
 end module hand_module
