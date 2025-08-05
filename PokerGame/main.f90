@@ -5,33 +5,64 @@ program main
     implicit none
 
     type(Deck) :: myDeck
-    type(Hand) :: myHand
+    type(Hand) :: myHand(6)
     type(Card) :: drawnCard
-    type(PokerHandRank) :: handRank
-    integer :: i
+    type(PokerHandRank) :: handRank(6)
+    integer :: i,j
 
-    ! Initialize deck using constructor
+    call random_seed() !Seed the random number generator
+
+    !initialize and shuffle the deck
     myDeck = deck_constructor()
     call myDeck%shuffle()
 
-    ! Initialize hand
-    myHand = hand_constructor()
+    ! Print header
+     print *, "*** P O K E R   H A N D   A N A L Y Z E R ***"
+    print *, ""
+    print *, "*** USING RANDOMIZED DECK OF CARDS ***"
+    print *, ""
+    print *, "*** Shuffled 52 card deck:"
+    call print_deck(myDeck)
+    print *, ""
 
-    ! Deal 5 cards to the hand
-    do i = 1, 5
-        drawnCard = myDeck%deal_card()
-        call myHand%add_card(drawnCard)
+    ! Deal 6 hands of 5 cards each
+
+    do i = 1, 6
+        myHand(i) = hand_constructor()
+        do j = 1, 5
+            drawnCard = myDeck%deal_card()
+            call myHand(i)%add_card(drawnCard)
+        end do
+        call myHand(i)%sort()
+        handrank(i) = pokerhand_constructor(myHand(i))
     end do
 
-    ! Sort the hand
-    call myHand%sort()
 
-    ! Display the hand
-    print *, "Your Hand:"
-    print *, myHand%to_string()
 
-    ! Evaluate the hand rank
-    handRank = pokerhand_constructor(myHand)
-    print *, "Hand Evaluation:"
-    print *, handRank%to_string()
+    ! Initialize hand
+!   myHand = hand_constructor()
+
+
+    ! Print the hands
+    print *, "*** Here are the six hands..."
+    do i = 1, 6
+        call print_hand(myHand)
+    end do
+    print *, ""
+
+    ! Print remaining cards
+    print *, "*** Here is what remains in the deck..."
+    call print_deck(myDeck)
+    print *, ""
+
+    ! Sort ranks from best to worst (lowest value is best)
+    call sort_hands_by_rank(handRank,myHand)
+
+    ! Display the sorted results
+    print *, "--- WINNING HAND ORDER ---"
+    do i = 1, 6
+        print *, trim(handRank(i)%to_string())
+    end do
 end program main
+
+
