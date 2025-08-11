@@ -1,34 +1,41 @@
-subroutine print_hand(hand)
+module helper_module
     use hand_module
-    use card_module
+    use deck_module
+    use pokerhandrank_module
     implicit none
-    type(Hand), intent(in) :: hand
-    integer :: i
-    character(len=3) :: card_str
-    character(len=50) :: output
+contains
 
-    output = ""
-    do i = 1, hand%current_size
-        card_str = hand%cards(i)%to_string()
-        output = trim(output) // trim(card_str) // " "
+
+subroutine print_hand(h)
+    use hand_module
+    type(Hand), intent(in) :: h
+    integer :: i
+    character(len=:), allocatable :: card_str
+
+
+    if (h%current_size == 0) then
+        print *, "(empty hand)"
+        return
+    end if
+
+    do i = 1, h%current_size
+        card_str = trim(h%cards(i)%to_string())
+        write(*,'(A)', advance='no') trim(card_str) // ' '
     end do
-    print *, trim(output)
+    write(*,*)
 end subroutine print_hand
 
-subroutine print_deck(deck)
-    use deck_module
-    use card_module
-    implicit none
-    type(Deck), intent(in) :: deck
-    integer :: i
-    character(len=3) :: card_str
+
+subroutine print_deck(d)
+    type(Deck), intent(in) :: d
+    integer :: i, count
+    character(len=:), allocatable :: card_str
     character(len=200) :: line
-    integer :: count
 
     count = 0
     line = ""
-    do i = 1, deck%current_size
-        card_str = deck%cards(i)%to_string()
+    do i = 1, d%current_size
+        card_str = trim(d%cards(i)%to_string())
         line = trim(line) // trim(card_str) // " "
         count = count + 1
         if (mod(count, 13) == 0) then
@@ -40,9 +47,7 @@ subroutine print_deck(deck)
 end subroutine print_deck
 
 subroutine sort_hands_by_rank(ranks, hands)
-    use pokerhandrank_module
-    use hand_module
-    implicit none
+
     type(PokerHandRank), intent(inout) :: ranks(6)
     type(Hand), intent(inout) :: hands(6)
     integer :: i, j, min_idx
@@ -67,3 +72,6 @@ subroutine sort_hands_by_rank(ranks, hands)
         end if
     end do
 end subroutine sort_hands_by_rank
+
+end module helper_module
+
