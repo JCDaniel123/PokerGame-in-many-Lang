@@ -2,6 +2,7 @@ program main
     use deck_module
     use hand_module
     use pokerhandrank_module
+    use helper_module
     implicit none
 
     type(Deck) :: myDeck
@@ -46,7 +47,7 @@ program main
     ! Print the hands
     print *, "*** Here are the six hands..."
     do i = 1, 6
-        call print_hand(myHand)
+        call print_hand(myHand(i))
     end do
     print *, ""
 
