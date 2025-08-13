@@ -40,7 +40,7 @@ public class Main {
                     // loop through each card in the line
                     for (String cardStr : cardStrings){
                         if(seenCards.contains(cardStr)){
-                             System.out.println( "Error: Duplicate card detected - " + cardStr);
+                             System.out.println( "*** Error - Duplicate CARD detected - " + cardStr);
                              fileScanner.close();
                              return;
                         }
