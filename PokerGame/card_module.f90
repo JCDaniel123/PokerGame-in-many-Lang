@@ -104,4 +104,26 @@ contains
         rank = this%rank
     end function card_get_rank
 
+    function card_from_string(str) result(c)
+    implicit none
+    character(len=*), intent(in) :: str
+    type(Card) :: c
+    character(len=2) :: rank
+    character(len=1) :: suit
+
+    ! Handle 10 specially since it's two characters
+    if (len_trim(str) == 3) then
+        rank = str(1:2)
+        suit = str(3:3)
+    else
+        rank = str(1:1)
+        suit = str(2:2)
+    end if
+
+    ! Assuming you already have a Card constructor:
+    c = card_constructor(rank, suit)
+end function card_from_string
+
+
+
 end module card_module
