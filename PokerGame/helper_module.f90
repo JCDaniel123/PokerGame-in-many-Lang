@@ -6,45 +6,50 @@ module helper_module
 contains
 
 
-subroutine print_hand(h)
+subroutine print_hand(h, newline)
     use hand_module
     type(Hand), intent(in) :: h
+    logical, intent(in), optional :: newline
     integer :: i
-    character(len=:), allocatable :: card_str
+    character(len=3) :: card_str
+    logical :: nl
 
+    nl = .true.
+    if (present(newline)) nl = newline
 
     if (h%current_size == 0) then
-        print *, "(empty hand)"
+        write(*,'(A)') "(empty hand)"
         return
     end if
 
     do i = 1, h%current_size
         card_str = trim(h%cards(i)%to_string())
-        write(*,'(A)', advance='no') trim(card_str) // ' '
+        write(*,'(A)', advance='no') card_str // ' '
     end do
-    write(*,*)
+    if (nl) write(*,*)
 end subroutine print_hand
+
 
 
 subroutine print_deck(d)
     type(Deck), intent(in) :: d
     integer :: i, count
     character(len=:), allocatable :: card_str
-    character(len=200) :: line
 
     count = 0
-    line = ""
     do i = 1, d%current_size
         card_str = trim(d%cards(i)%to_string())
-        line = trim(line) // trim(card_str) // " "
+        write(*,'(A)', advance='no') trim(card_str) // ' '
         count = count + 1
         if (mod(count, 13) == 0) then
-            print *, trim(line)
-            line = ""
+            print *  ! move to next line after 13 cards
         end if
     end do
-    if (len_trim(line) > 0) print *, trim(line)
+    if (mod(count, 13) /= 0) then
+        print *  ! final newline if last row isn't full
+    end if
 end subroutine print_deck
+
 
 subroutine sort_hands_by_rank(ranks, hands)
 

@@ -224,18 +224,20 @@ contains
     end function pokerhand_is_pair
 
     ! Convert to string
-    function pokerhand_to_string(this) result(str)
-        class(PokerHandRank), intent(in) :: this  ! Changed from Poker_Hand_Rank
-        character(len=100) :: str
-        character(len=3) :: card_str
-        integer :: i
-        
-        write(str, '(A,I0,A)') "Rank: ", this%rank_value, ", Cards: "
-        do i = 1, 5
-            card_str = this%sorted_cards(i)%to_string()
-            str = trim(str) // trim(card_str) // " "
-        end do
-        str = trim(str)
-    end function pokerhand_to_string
+  function pokerhand_to_string(this) result(str)
+    class(PokerHandRank), intent(in) :: this
+    character(len=100) :: str
+    character(len=20), dimension(10) :: rank_names
+
+    ! Map numeric rank to human-readable name
+    rank_names = [  character(len=20) :: &
+        "High Card", "One Pair", "Two Pair", "Three of a Kind", &
+        "Straight", "Flush", "Full House", "Four of a Kind", &
+        "Straight Flush", "Royal Flush" &
+    ]
+
+    str = trim(rank_names(this%rank_value))
+end function pokerhand_to_string
+
 
 end module pokerhandrank_module

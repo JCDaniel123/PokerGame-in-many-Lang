@@ -60,10 +60,12 @@ program main
     call sort_hands_by_rank(handRank,myHand)
 
     ! Display the sorted results
-    print *, "--- WINNING HAND ORDER ---"
-    do i = 1, 6
-        print *, trim(handRank(i)%to_string())
-    end do
+   print *, "--- WINNING HAND ORDER ---"
+do i = 1, 6
+    call print_hand(myHand(i), .false.)       ! Print hand WITHOUT newline
+    print *, "- ", trim(handRank(i)%to_string())  ! Print rank on the same line
+end do
+
 end program main
 
 
