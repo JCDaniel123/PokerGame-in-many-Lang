@@ -4,13 +4,14 @@ program main
     use pokerhandrank_module
     use helper_module
     use card_module
+    use file_reader_module 
     implicit none
 
     type(Deck) :: myDeck
     type(Hand) :: myHand(6)
     type(Card) :: drawnCard
     type(PokerHandRank) :: handRank(6)
-    integer :: i, j
+    integer :: i, j, ierr
     integer :: arg_count
     character(len=200) :: filename
     character(len=3), allocatable :: all_cards(:)
@@ -37,12 +38,13 @@ program main
         allocate(all_cards(0))
         total_cards = 0
 
-        do
-            read(file_unit, *, iostat=ios) temp_card
-            if (ios /= 0) exit
-            call add_card(all_cards, temp_card)  ! Duplicate check inside
-            total_cards = total_cards + 1
-        end do
+
+do i = 1, 5
+    read(10, *, iostat=ierr) drawnCard
+    if (ierr /= 0) exit
+    total_cards = total_cards + 1
+end do
+
         close(file_unit)
 
         if (total_cards /= 30) then
@@ -116,5 +118,9 @@ contains
          end if
         card_array = [card_array, new_card]
     end subroutine add_card
+
+
+
+    
 
 end program main
