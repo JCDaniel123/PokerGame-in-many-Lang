@@ -150,18 +150,30 @@ contains
     end function pokerhand_is_flush
 
     ! Check for straight
-    logical function pokerhand_is_straight(this)
-        class(PokerHandRank), intent(in) :: this  ! Changed from Poker_Hand_Rank
-        integer :: i
-        
-        pokerhand_is_straight = .true.
-        do i = 1, 4
-            if (this%sorted_cards(i+1)%get_value() /= this%sorted_cards(i)%get_value() + 1) then
-                pokerhand_is_straight = .false.
-                exit
-            end if
-        end do
-    end function pokerhand_is_straight
+  logical function pokerhand_is_straight(this)
+    class(PokerHandRank), intent(in) :: this
+    integer :: i
+    logical :: is_ace_low
+
+    ! Check for regular straight
+    pokerhand_is_straight = .true.
+    do i = 1, 4
+        if (this%sorted_cards(i+1)%get_value() /= this%sorted_cards(i)%get_value() + 1) then
+            pokerhand_is_straight = .false.
+            exit
+        end if
+    end do
+
+    ! Check for Ace-low straight (A, 2, 3, 4, 5)
+    if (.not. pokerhand_is_straight) then
+        is_ace_low = this%sorted_cards(1)%get_value() == 1 .and. &
+                     this%sorted_cards(2)%get_value() == 2 .and. &
+                     this%sorted_cards(3)%get_value() == 3 .and. &
+                     this%sorted_cards(4)%get_value() == 4 .and. &
+                     this%sorted_cards(5)%get_value() == 5
+        pokerhand_is_straight = is_ace_low
+    end if
+end function pokerhand_is_straight
 
     ! Get value counts
     function pokerhand_get_value_counts(this) result(counts)
@@ -229,11 +241,11 @@ contains
     character(len=100) :: str
     character(len=20), dimension(10) :: rank_names
 
-    ! Map numeric rank to human-readable name
+    ! Map numeric rank to human-readable name (1 = best, 10 = worst)
     rank_names = [  character(len=20) :: &
-        "High Card", "One Pair", "Two Pair", "Three of a Kind", &
-        "Straight", "Flush", "Full House", "Four of a Kind", &
-        "Straight Flush", "Royal Flush" &
+        "Royal Flush", "Straight Flush", "Four of a Kind", "Full House", &
+        "Flush", "Straight", "Three of a Kind", "Two Pair", &
+        "One Pair", "High Card" &
     ]
 
     str = trim(rank_names(this%rank_value))

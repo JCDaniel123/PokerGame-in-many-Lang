@@ -4,7 +4,7 @@ program main
     use pokerhandrank_module
     use helper_module
     use card_module
-    use file_reader_module 
+    use file_reader_module
     implicit none
 
     type(Deck) :: myDeck
@@ -37,6 +37,11 @@ program main
 
         allocate(all_cards(0))
         total_cards = 0
+
+       call read_cards_from_file(filename, all_cards)
+       total_cards = size(all_cards)
+
+       close(file_unit)
 
 
 do i = 1, 5
@@ -107,20 +112,5 @@ do i = 1, 6
     print *, "- ", trim(handRank(i)%to_string())  ! Print rank on the same line
 end do
 contains
-
-    subroutine add_card(card_array, new_card)
-        character(len=3), allocatable, intent(inout) :: card_array(:)
-        character(len=3), intent(in) :: new_card
-       if (any(trim(new_card) == [(trim(card_array(i)), i = 1, size(card_array))])) then
-            print *, "*** ERROR - DUPLICATED CARD FOUND IN DECK ***"
-            print *, "*** DUPLICATE: ", trim(new_card), " ***"
-            stop
-         end if
-        card_array = [card_array, new_card]
-    end subroutine add_card
-
-
-
-    
 
 end program main

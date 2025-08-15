@@ -50,27 +50,34 @@ contains
         end do
     end function replace_commas
 
-    subroutine split_cards(str, parts)
-        character(len=*), intent(in) :: str
-        character(len=3), allocatable, intent(out) :: parts(:)
-        integer :: i, start, len_str
-        character(len=3) :: token
+   subroutine split_cards(str, parts)
+    character(len=*), intent(in) :: str
+    character(len=3), allocatable, intent(out) :: parts(:)
+    integer :: i, start, len_str, pos
+    character(len=3) :: token
+    integer :: token_count
 
-        len_str = len_trim(str)
-        allocate(parts(0))
-        start = 1
-
-        do i = 1, len_str
-            if (str(i:i) == " " .or. i == len_str) then
-                if (i == len_str) i = i + 1 ! include last char
-                token = adjustl(str(start:i-1))
-                if (len_trim(token) > 0) then
-                    parts = [parts, token]
-                end if
-                start = i + 1
+    len_str = len_trim(str)
+    allocate(parts(0))
+    start = 1
+    token_count = 0
+    pos = 1
+    do while (pos <= len_str)
+        if (str(pos:pos) == " " .or. pos == len_str) then
+            if (pos == len_str .and. str(pos:pos) /= " ") then
+                token = str(start:pos)
+            else
+                token = str(start:pos-1)
             end if
-        end do
-    end subroutine split_cards
+            if (len_trim(token) > 0) then
+                parts = [parts, trim(adjustl(token))]
+                token_count = token_count + 1
+            end if
+            start = pos + 1
+        end if
+        pos = pos + 1
+    end do
+end subroutine split_cards
 
     subroutine add_card(card_array, new_card)
         character(len=3), allocatable, intent(inout) :: card_array(:)
